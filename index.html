@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Metal Monitor — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="page" data-state="loading" id="app">
+    <header class="header">
+      <h1>Metal Monitor</h1>
+      <p class="last-updated" id="lastUpdated" aria-live="polite"></p>
+    </header>
+
+    <div class="loading" id="loading">
+      <div class="spinner" aria-hidden="true"></div>
+      <span class="label">Loading prices…</span>
+    </div>
+
+    <div class="error-state" id="errorState" style="display: none;" role="alert">
+      <h2>Couldn’t load dashboard</h2>
+      <p id="errorMessage">Check your connection and try again.</p>
+      <button type="button" id="retryBtn">Retry</button>
+    </div>
+
+    <main class="main-content">
+      <section id="spotStrip" class="spot-strip" aria-label="Spot prices"></section>
+
+      <p class="section-head">All metals</p>
+      <section id="metalCards" class="metals-grid" aria-label="Metal cards"></section>
+
+      <p class="section-head">Price history</p>
+      <section class="charts-section" aria-label="Charts">
+        <div id="goldChartBlock" class="chart-panel" style="display: none;">
+          <h2>Gold — 91.6% & 100%</h2>
+          <div class="chart-legend" id="goldChartLegend"></div>
+          <div class="chart-container tall">
+            <canvas id="goldChart" aria-label="Gold price chart"></canvas>
+          </div>
+        </div>
+        <div class="chart-panel">
+          <h2 id="mainChartTitle">Trend</h2>
+          <div class="chart-legend" id="mainChartLegend"></div>
+          <div class="chart-container">
+            <canvas id="mainChart" aria-label="Price chart"></canvas>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const app = document.getElementById("app");
+    const loadingEl = document.getElementById("loading");
+    const errorState = document.getElementById("errorState");
+    const errorMessage = document.getElementById("errorMessage");
+    const retryBtn = document.getElementById("retryBtn");
+    const lastUpdated = document.getElementById("lastUpdated");
+    const spotStrip = document.getElementById("spotStrip");
+    const metalCards = document.getElementById("metalCards");
+    const goldChartBlock = document.getElementById("goldChartBlock");
+    const goldChartLegend = document.getElementById("goldChartLegend");
+    const mainChartTitle = document.getElementById("mainChartTitle");
+    const mainChartLegend = document.getElementById("mainChartLegend");
+
+    let goldChartInstance = null;
+    let mainChartInstance = null;
+    let dashboardData = null;
+
+    const COLORS = {
+      gold: "#d4af37",
+      goldLight: "rgba(212, 175, 55, 0.15)",
+      gold100: "#e5c65c",
+      gold100Light: "rgba(229, 198, 92, 0.12)",
+      silver: "#9ca3af",
+      silverLight: "rgba(156, 163, 175, 0.12)",
+      ma: "#6b7280",
+    };
+
+    function setState(state) {
+      app.setAttribute("data-state", state);
+      if (state === "error") {
+        errorState.style.display = "block";
+        loadingEl.style.display = "none";
+      } else if (state === "loaded") {
+        errorState.style.display = "none";
+        loadingEl.style.display = "none";
+      } else {
+        errorState.style.display = "none";
+        loadingEl.style.display = "flex";
+      }
+    }
+
+    function formatMoney(num) {
+      if (num == null || Number.isNaN(num)) return "—";
+      return "₹" + Number(num).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function formatPct(num) {
+      if (num == null || Number.isNaN(num)) return "—";
+      return Number(num).toFixed(2) + "%";
+    }
+
+    function formatNum(num, dec) {
+      if (num == null || Number.isNaN(num)) return "—";
+      return Number(num).toFixed(dec ?? 2);
+    }
+
+    function formatDateShort(iso) {
+      if (!iso) return "";
+      try {
+        return new Date(iso).toLocaleDateString("en-IN", { day: "2-digit", month: "short" });
+      } catch {
+        return String(iso).slice(0, 10);
+      }
+    }
+
+    function maSeries(values, period) {
+      if (!values?.length) return [];
+      const out = [];
+      for (let i = 0; i < values.length; i++) {
+        if (i < period - 1) out.push(null);
+        else out.push(values.slice(i - period + 1, i + 1).reduce((a, b) => a + b, 0) / period);
+      }
+      return out;
+    }
+
+    function rateForPurity(history, purity) {
+      if (!Array.isArray(history)) return null;
+      const p = Number(purity);
+      const e = history.find((x) => x && Math.abs(Number(x.purity) - p) < 0.01);
+      return e != null ? Number(e.rate) : null;
+    }
+
+    function ratediffForPurity(metal, purity) {
+      if (!metal) return null;
+      const h = metal.history;
+      if (!Array.isArray(h)) return metal.ratediff ?? null;
+      const p = Number(purity);
+      const e = h.find((x) => x && Math.abs(Number(x.purity) - p) < 0.01);
+      return e != null && e.ratediff != null ? Number(e.ratediff) : null;
+    }
+
+    function formatDiff(num) {
+      if (num == null || Number.isNaN(num)) return "";
+      const n = Number(num);
+      const sign = n >= 0 ? "+" : "−";
+      return sign + "₹" + Math.abs(n).toLocaleString("en-IN", { maximumFractionDigits: 0 });
+    }
+
+    function renderSpotStrip(metals) {
+      const gold = metals?.GOLD;
+      const silver = metals?.SILVER;
+      const g916 = gold ? rateForPurity(gold.history, 91.6) : null;
+      const g100 = gold ? rateForPurity(gold.history, 100) : null;
+      const sPrice = silver?.price ?? (silver?.history?.[0]?.rate ?? null);
+      const g916Diff = gold?.ratediff916 ?? ratediffForPurity(gold, 91.6);
+      const g100Diff = gold?.ratediff100 ?? ratediffForPurity(gold, 100);
+      const sDiff = silver?.ratediff ?? ratediffForPurity(silver, silver?.history?.[0]?.purity);
+
+      spotStrip.innerHTML = "";
+      const items = [];
+      if (g916 != null) items.push({ label: "Gold 91.6%", value: g916, diff: g916Diff, class: "gold" });
+      if (g100 != null) items.push({ label: "Gold 100%", value: g100, diff: g100Diff, class: "gold" });
+      if (sPrice != null) items.push({ label: "Silver", value: sPrice, diff: sDiff, class: "silver" });
+
+      items.forEach((item) => {
+        const div = document.createElement("div");
+        div.className = "spot-strip-item " + item.class;
+        div.setAttribute("aria-label", item.label + " " + formatMoney(item.value) + (item.diff != null ? " " + formatDiff(item.diff) + " from previous" : ""));
+        const diffHtml = item.diff != null ? `<span class="strip-diff">${formatDiff(item.diff)}</span>` : "";
+        div.innerHTML = `<span class="label">${item.label}</span><span class="value">${formatMoney(item.value)}</span>${diffHtml}`;
+        spotStrip.appendChild(div);
+      });
+
+      if (!items.length) {
+        spotStrip.innerHTML = '<div class="spot-strip-item"><span class="label">No spot data</span><span class="value">—</span></div>';
+      }
+    }
+
+    function renderCards(metals) {
+      metalCards.innerHTML = "";
+      const order = ["GOLD", "SILVER", "PLATINUM", "ALLOY"];
+      const list = order.some((k) => metals[k]) ? order.filter((k) => metals[k]) : Object.keys(metals);
+
+      list.forEach((key, i) => {
+        const m = metals[key];
+        const card = document.createElement("article");
+        card.className = "card";
+        card.setAttribute("aria-label", `${m.metalName} ${formatMoney(m.price)}`);
+
+        const isGold = key === "GOLD";
+        const isSilver = key === "SILVER";
+        const nameClass = isGold ? "metal-name gold" : isSilver ? "metal-name silver" : "metal-name";
+
+        const values = m.chartData?.values || [];
+        let sparkHtml = "";
+        if (values.length >= 2) {
+          const min = Math.min(...values);
+          const max = Math.max(...values);
+          const r = max - min || 1;
+          const pts = values.map((v, j) => `${(j / (values.length - 1)) * 100},${100 - ((v - min) / r) * 100}`).join(" ");
+          const stroke = isGold ? COLORS.gold : isSilver ? COLORS.silver : COLORS.ma;
+          sparkHtml = `<div class="spark"><svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%;height:100%;stroke:${stroke}"><polyline fill="none" stroke-width="1" points="${pts}"/></svg></div>`;
+        }
+
+        const b = m.bollinger;
+        const bStr = b ? `${formatNum(b.upper)} / ${formatNum(b.lower)}` : "—";
+
+        const purities = isGold && m.history?.length
+          ? m.history.filter((h) => h.purity === 91.6 || h.purity === 100).map((h) => `${h.purity}% ${formatMoney(h.rate)}`).join(" · ")
+          : m.history?.length ? m.history.slice(0, 4).map((h) => `${h.purity}%`).join(", ") + (m.history.length > 4 ? "…" : "") : "";
+
+        const diffStr = m.ratediff != null ? formatDiff(m.ratediff) : "";
+        card.innerHTML = `
+          <div class="${nameClass}">${m.metalName}</div>
+          <p class="price">${formatMoney(m.price)}${diffStr ? `<span class="card-diff"> ${diffStr}</span>` : ""}</p>
+          ${sparkHtml}
+          <div class="meta-row">
+            <div class="row"><span class="k">Change (vs prev)</span><span class="v">${diffStr || "—"}</span></div>
+            <div class="row"><span class="k">Volatility</span><span class="v">${formatNum(m.volatility)}</span></div>
+            <div class="row"><span class="k">Drawdown</span><span class="v">${formatPct(m.drawdown)}</span></div>
+            <div class="row"><span class="k">MA (7d)</span><span class="v">${formatMoney(m.ma7)}</span></div>
+            <div class="row"><span class="k">Bollinger</span><span class="v">${bStr}</span></div>
+          </div>
+          ${purities ? `<div class="purities">${purities}</div>` : ""}
+        `;
+        metalCards.appendChild(card);
+      });
+    }
+
+    function buildGoldChart() {
+      const gold = dashboardData?.metals?.GOLD;
+      const d916 = gold?.chartData916;
+      const d100 = gold?.chartData100;
+      const has916 = d916?.labels?.length && d916?.values?.length;
+      const has100 = d100?.labels?.length && d100?.values?.length;
+
+      if (!has916 && !has100) {
+        goldChartBlock.style.display = "none";
+        if (goldChartInstance) {
+          goldChartInstance.destroy();
+          goldChartInstance = null;
+        }
+        return;
+      }
+
+      goldChartBlock.style.display = "block";
+      const labels = (has916 ? d916.labels : d100.labels).map(formatDateShort);
+      const datasets = [];
+
+      if (has916) {
+        const v = d916.values;
+        datasets.push({
+          label: "91.6%",
+          data: v,
+          borderColor: COLORS.gold,
+          backgroundColor: COLORS.goldLight,
+          fill: true,
+          tension: 0.25,
+          borderWidth: 2,
+          pointRadius: 0,
+          pointHoverRadius: 4,
+        });
+        const ma = maSeries(v, 7);
+        if (ma.some((x) => x != null)) {
+          datasets.push({
+            label: "91.6% MA(7)",
+            data: ma,
+            borderColor: COLORS.ma,
+            borderDash: [5, 5],
+            borderWidth: 1,
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+          });
+        }
+      }
+
+      if (has100) {
+        const v = d100.values;
+        datasets.push({
+          label: "100%",
+          data: v,
+          borderColor: COLORS.gold100,
+          backgroundColor: COLORS.gold100Light,
+          fill: true,
+          tension: 0.25,
+          borderWidth: 2,
+          pointRadius: 0,
+          pointHoverRadius: 4,
+        });
+        const ma = maSeries(v, 7);
+        if (ma.some((x) => x != null) && !has916) {
+          datasets.push({
+            label: "100% MA(7)",
+            data: ma,
+            borderColor: COLORS.ma,
+            borderDash: [5, 5],
+            borderWidth: 1,
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+          });
+        }
+      }
+
+      goldChartLegend.innerHTML = datasets
+        .filter((d) => !d.label.includes("MA"))
+        .map((d) => `<span class="item"><span class="swatch" style="background:${d.borderColor}"></span>${d.label}</span>`)
+        .join("");
+
+      const ctx = document.getElementById("goldChart").getContext("2d");
+      if (goldChartInstance) goldChartInstance.destroy();
+      goldChartInstance = new Chart(ctx, {
+        type: "line",
+        data: { labels, datasets },
+        options: chartOptions("₹"),
+      });
+    }
+
+    function chartOptions(prefix) {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: "#1a1a1a",
+            titleFont: { family: "IBM Plex Sans", size: 12 },
+            bodyFont: { family: "IBM Plex Mono", size: 12 },
+            padding: 12,
+            callbacks: {
+              label: (item) => `${item.dataset.label}: ${prefix}${Number(item.raw).toLocaleString("en-IN", { minimumFractionDigits: 2 })}`,
+            },
+          },
+        },
+        scales: {
+          x: {
+            grid: { color: "rgba(255,255,255,0.04)", drawBorder: false },
+            ticks: { color: "#6b7280", maxTicksLimit: 8, font: { size: 11 } },
+          },
+          y: {
+            beginAtZero: false,
+            grid: { color: "rgba(255,255,255,0.04)", drawBorder: false },
+            ticks: {
+              color: "#6b7280",
+              font: { size: 11 },
+              callback: (v) => prefix + Number(v).toLocaleString("en-IN", { maximumFractionDigits: 0 }),
+            },
+          },
+        },
+      };
+    }
+
+    function buildMainChart() {
+      const metals = dashboardData?.metals || {};
+      const priority = ["GOLD", "SILVER"];
+      let keys = priority.filter((k) => metals[k]?.chartData?.values?.length > 0);
+      if (!keys.length) keys = Object.keys(metals).filter((k) => metals[k].chartData?.values?.length > 0);
+      const first = keys[0];
+
+      if (!first) {
+        if (mainChartInstance) {
+          mainChartInstance.destroy();
+          mainChartInstance = null;
+        }
+        return;
+      }
+
+      const m = metals[first];
+      const labels = (m.chartData?.labels || []).map(formatDateShort);
+      const values = m.chartData?.values || [];
+      const ma = maSeries(values, 7);
+
+      const lineColor = first === "GOLD" ? COLORS.gold : first === "SILVER" ? COLORS.silver : COLORS.gold100;
+      const fillColor = first === "GOLD" ? COLORS.goldLight : first === "SILVER" ? COLORS.silverLight : "rgba(255,255,255,0.05)";
+
+      const datasets = [
+        {
+          label: first,
+          data: values,
+          borderColor: lineColor,
+          backgroundColor: fillColor,
+          fill: true,
+          tension: 0.25,
+          borderWidth: 2,
+          pointRadius: 0,
+          pointHoverRadius: 4,
+        },
+      ];
+      if (ma.some((x) => x != null)) {
+        datasets.push({
+          label: "MA(7)",
+          data: ma,
+          borderColor: COLORS.ma,
+          borderDash: [5, 5],
+          borderWidth: 1,
+          fill: false,
+          pointRadius: 0,
+          pointHoverRadius: 3,
+        });
+      }
+
+      mainChartTitle.textContent = `${first} — price & 7-day average`;
+      mainChartLegend.innerHTML = `<span class="item"><span class="swatch" style="background:${lineColor}"></span>${first}</span><span class="item"><span class="swatch dash"></span>MA(7)</span>`;
+
+      const ctx = document.getElementById("mainChart").getContext("2d");
+      if (mainChartInstance) mainChartInstance.destroy();
+      mainChartInstance = new Chart(ctx, {
+        type: "line",
+        data: { labels, datasets },
+        options: chartOptions("₹"),
+      });
+    }
+
+    async function loadDashboard() {
+      setState("loading");
+      try {
+        const res = await fetch("dashboard.json");
+        if (!res.ok) throw new Error(res.statusText || "Failed to fetch");
+        const data = await res.json();
+        if (!data.metals || typeof data.metals !== "object") throw new Error("Invalid data");
+
+        dashboardData = data;
+        const d = new Date(data.lastUpdated);
+        lastUpdated.textContent = "Updated " + d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) + " · " + d.toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit", hour12: true });
+
+        renderSpotStrip(data.metals);
+        renderCards(data.metals);
+        buildGoldChart();
+        buildMainChart();
+        setState("loaded");
+      } catch (err) {
+        errorMessage.textContent = err.message || "Check your connection and try again.";
+        setState("error");
+      }
+    }
+
+    retryBtn.addEventListener("click", loadDashboard);
+    loadDashboard();
+  </script>
+</body>
+</html>

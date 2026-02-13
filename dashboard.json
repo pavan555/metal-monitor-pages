@@ -1,0 +1,279 @@
+{
+  "lastUpdated": "2026-02-13T17:59:36.199Z",
+  "metals": {
+    "GOLD": {
+      "metalName": "GOLD",
+      "history": [
+        {
+          "purity": 100,
+          "rate": 15580,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 99.5,
+          "rate": 15580,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 91.6,
+          "rate": 14280,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 75,
+          "rate": 11840,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 58.5,
+          "rate": 9208,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 58.3,
+          "rate": 9208,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 6,
+          "rate": 15858,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        }
+      ],
+      "price": 15580,
+      "ratediff": null,
+      "bollinger": null,
+      "volatility": 0,
+      "drawdown": 0,
+      "anomalyScore": 0,
+      "chartData": {
+        "labels": [
+          "2026-02-13",
+          "2026-02-13",
+          "2026-02-13"
+        ],
+        "values": [
+          15580,
+          15580,
+          15580
+        ],
+        "ma7": [
+          null,
+          null,
+          null
+        ]
+      },
+      "ma7": null,
+      "chartData916": {
+        "labels": [
+          "2026-02-13",
+          "2026-02-13",
+          "2026-02-13"
+        ],
+        "values": [
+          14280,
+          14127,
+          14280
+        ]
+      },
+      "chartData100": {
+        "labels": [
+          "2026-02-13",
+          "2026-02-13",
+          "2026-02-13"
+        ],
+        "values": [
+          15580,
+          15580,
+          15580
+        ]
+      },
+      "ratediff916": null,
+      "ratediff100": null
+    },
+    "SILVER": {
+      "metalName": "SILVER",
+      "history": [
+        {
+          "purity": 100,
+          "rate": 259.9,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 99.9,
+          "rate": 259.9,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 92.5,
+          "rate": 259.9,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 80,
+          "rate": 259.9,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 75,
+          "rate": 259.9,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 70,
+          "rate": 259.9,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 65,
+          "rate": 259.9,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 60,
+          "rate": 259.9,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 55,
+          "rate": 259.9,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 50,
+          "rate": 259.9,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 45,
+          "rate": 259.9,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 40,
+          "rate": 259.9,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        }
+      ],
+      "price": 259.9,
+      "ratediff": null,
+      "bollinger": null,
+      "volatility": 0,
+      "drawdown": 0,
+      "anomalyScore": 0,
+      "chartData": {
+        "labels": [
+          "2026-02-13",
+          "2026-02-13",
+          "2026-02-13"
+        ],
+        "values": [
+          259.9,
+          259.9,
+          259.9
+        ],
+        "ma7": [
+          null,
+          null,
+          null
+        ]
+      },
+      "ma7": null
+    },
+    "PLATINUM": {
+      "metalName": "PLATINUM",
+      "history": [
+        {
+          "purity": 100,
+          "rate": 7505,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        },
+        {
+          "purity": 95,
+          "rate": 7505,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        }
+      ],
+      "price": 7505,
+      "ratediff": null,
+      "bollinger": null,
+      "volatility": 0,
+      "drawdown": 0,
+      "anomalyScore": 0,
+      "chartData": {
+        "labels": [
+          "2026-02-13",
+          "2026-02-13",
+          "2026-02-13"
+        ],
+        "values": [
+          7505,
+          7505,
+          7505
+        ],
+        "ma7": [
+          null,
+          null,
+          null
+        ]
+      },
+      "ma7": null
+    },
+    "ALLOY": {
+      "metalName": "ALLOY",
+      "history": [
+        {
+          "purity": 100,
+          "rate": 5000,
+          "createdTime": "2026-02-13 11:02:16.55",
+          "ratediff": null
+        }
+      ],
+      "price": 5000,
+      "ratediff": null,
+      "bollinger": null,
+      "volatility": 0,
+      "drawdown": 0,
+      "anomalyScore": 0,
+      "chartData": {
+        "labels": [
+          "2026-02-13",
+          "2026-02-13",
+          "2026-02-13"
+        ],
+        "values": [
+          5000,
+          5000,
+          5000
+        ],
+        "ma7": [
+          null,
+          null,
+          null
+        ]
+      },
+      "ma7": null
+    }
+  }
+}
