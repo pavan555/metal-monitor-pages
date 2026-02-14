@@ -1,56 +1,56 @@
 {
-  "lastUpdated": "2026-02-13T19:07:08.499Z",
+  "lastUpdated": "2026-02-14T05:31:24.243Z",
   "metals": {
     "GOLD": {
       "metalName": "GOLD",
       "history": [
         {
           "purity": 100,
-          "rate": 15580,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 15775,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 99.5,
-          "rate": 15580,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 15775,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 91.6,
-          "rate": 14280,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 14460,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 75,
-          "rate": 11840,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 11989,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 58.5,
-          "rate": 9208,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 9324,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 58.3,
-          "rate": 9208,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 9324,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 6,
-          "rate": 15858,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 16050,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         }
       ],
-      "price": 15580,
+      "price": 15775,
       "ratediff": null,
       "bollinger": null,
-      "volatility": 0,
+      "volatility": 0.08549964421723076,
       "drawdown": 0,
       "anomalyScore": 0,
       "chartData": {
@@ -58,15 +58,18 @@
           "2026-02-13",
           "2026-02-13",
           "2026-02-13",
-          "2026-02-13"
+          "2026-02-13",
+          "2026-02-14"
         ],
         "values": [
           15580,
           15580,
           15580,
-          15580
+          15580,
+          15775
         ],
         "ma7": [
+          null,
           null,
           null,
           null,
@@ -79,13 +82,15 @@
           "2026-02-13",
           "2026-02-13",
           "2026-02-13",
-          "2026-02-13"
+          "2026-02-13",
+          "2026-02-14"
         ],
         "values": [
           14280,
           14127,
           14280,
-          14280
+          14280,
+          14460
         ]
       },
       "chartData100": {
@@ -93,13 +98,15 @@
           "2026-02-13",
           "2026-02-13",
           "2026-02-13",
-          "2026-02-13"
+          "2026-02-13",
+          "2026-02-14"
         ],
         "values": [
           15580,
           15580,
           15580,
-          15580
+          15580,
+          15775
         ]
       },
       "ratediff916": null,
@@ -110,81 +117,81 @@
       "history": [
         {
           "purity": 100,
-          "rate": 259.9,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 261.9,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 99.9,
-          "rate": 259.9,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 261.9,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 92.5,
-          "rate": 259.9,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 261.9,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 80,
-          "rate": 259.9,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 261.9,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 75,
-          "rate": 259.9,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 261.9,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 70,
-          "rate": 259.9,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 261.9,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 65,
-          "rate": 259.9,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 261.9,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 60,
-          "rate": 259.9,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 261.9,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 55,
-          "rate": 259.9,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 261.9,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 50,
-          "rate": 259.9,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 261.9,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 45,
-          "rate": 259.9,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 261.9,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 40,
-          "rate": 259.9,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "rate": 261.9,
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         }
       ],
-      "price": 259.9,
+      "price": 261.9,
       "ratediff": null,
       "bollinger": null,
-      "volatility": 0,
+      "volatility": 0.05269373096265054,
       "drawdown": 0,
       "anomalyScore": 0,
       "chartData": {
@@ -192,15 +199,18 @@
           "2026-02-13",
           "2026-02-13",
           "2026-02-13",
-          "2026-02-13"
+          "2026-02-13",
+          "2026-02-14"
         ],
         "values": [
           259.9,
           259.9,
           259.9,
-          259.9
+          259.9,
+          261.9
         ],
         "ma7": [
+          null,
           null,
           null,
           null,
@@ -215,13 +225,13 @@
         {
           "purity": 100,
           "rate": 7505,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         },
         {
           "purity": 95,
           "rate": 7505,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         }
       ],
@@ -236,15 +246,18 @@
           "2026-02-13",
           "2026-02-13",
           "2026-02-13",
-          "2026-02-13"
+          "2026-02-13",
+          "2026-02-14"
         ],
         "values": [
+          7505,
           7505,
           7505,
           7505,
           7505
         ],
         "ma7": [
+          null,
           null,
           null,
           null,
@@ -259,7 +272,7 @@
         {
           "purity": 100,
           "rate": 5000,
-          "createdTime": "2026-02-13 11:02:16.55",
+          "createdTime": "2026-02-14 10:18:32.23",
           "ratediff": null
         }
       ],
@@ -274,15 +287,18 @@
           "2026-02-13",
           "2026-02-13",
           "2026-02-13",
-          "2026-02-13"
+          "2026-02-13",
+          "2026-02-14"
         ],
         "values": [
+          5000,
           5000,
           5000,
           5000,
           5000
         ],
         "ma7": [
+          null,
           null,
           null,
           null,
