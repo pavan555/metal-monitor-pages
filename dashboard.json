@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-14T18:55:39.580Z",
+  "lastUpdated": "2026-02-14T19:18:52.892Z",
   "metals": {
     "ALLOY": {
       "metalName": "ALLOY",
@@ -13,7 +13,11 @@
       ],
       "price": 5000,
       "ratediff": 0,
-      "bollinger": null,
+      "bollinger": {
+        "middle": 5000,
+        "upper": 5000,
+        "lower": 5000
+      },
       "volatility": 0,
       "drawdown": 0,
       "anomalyScore": 0,
@@ -43,7 +47,7 @@
           null
         ]
       },
-      "ma7": null
+      "ma7": 5000
     },
     "GOLD": {
       "metalName": "GOLD",
@@ -52,48 +56,52 @@
           "purity": 6,
           "rate": 16050,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 192
+          "ratediff": 0
         },
         {
           "purity": 58.3,
           "rate": 9324,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 116
+          "ratediff": 0
         },
         {
           "purity": 58.5,
           "rate": 9324,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 116
+          "ratediff": 0
         },
         {
           "purity": 75,
           "rate": 11989,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 149
+          "ratediff": 0
         },
         {
           "purity": 91.6,
           "rate": 14307,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 180
+          "ratediff": -153
         },
         {
           "purity": 99.5,
           "rate": 15775,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 195
+          "ratediff": 0
         },
         {
           "purity": 100,
           "rate": 15775,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 195
+          "ratediff": 0
         }
       ],
       "price": 15775,
-      "ratediff": 195,
-      "bollinger": null,
+      "ratediff": 0,
+      "bollinger": {
+        "middle": 15645,
+        "upper": 15828.847763108502,
+        "lower": 15461.152236891498
+      },
       "volatility": 0.07898118816709665,
       "drawdown": 0,
       "anomalyScore": 0,
@@ -123,7 +131,7 @@
           null
         ]
       },
-      "ma7": null,
+      "ma7": 15645,
       "chartData916": {
         "labels": [
           "2026-02-13",
@@ -160,8 +168,8 @@
           15775
         ]
       },
-      "ratediff916": 180,
-      "ratediff100": 195
+      "ratediff916": -153,
+      "ratediff100": 0
     },
     "PLATINUM": {
       "metalName": "PLATINUM",
@@ -181,7 +189,11 @@
       ],
       "price": 7505,
       "ratediff": 0,
-      "bollinger": null,
+      "bollinger": {
+        "middle": 7505,
+        "upper": 7505,
+        "lower": 7505
+      },
       "volatility": 0,
       "drawdown": 0,
       "anomalyScore": 0,
@@ -211,7 +223,7 @@
           null
         ]
       },
-      "ma7": null
+      "ma7": 7505
     },
     "SILVER": {
       "metalName": "SILVER",
@@ -220,78 +232,82 @@
           "purity": 40,
           "rate": 261.9,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 2
+          "ratediff": 0
         },
         {
           "purity": 45,
           "rate": 261.9,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 2
+          "ratediff": 0
         },
         {
           "purity": 50,
           "rate": 261.9,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 2
+          "ratediff": 0
         },
         {
           "purity": 55,
           "rate": 261.9,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 2
+          "ratediff": 0
         },
         {
           "purity": 60,
           "rate": 261.9,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 2
+          "ratediff": 0
         },
         {
           "purity": 65,
           "rate": 261.9,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 2
+          "ratediff": 0
         },
         {
           "purity": 70,
           "rate": 261.9,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 2
+          "ratediff": 0
         },
         {
           "purity": 75,
           "rate": 261.9,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 2
+          "ratediff": 0
         },
         {
           "purity": 80,
           "rate": 261.9,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 2
+          "ratediff": 0
         },
         {
           "purity": 92.5,
           "rate": 261.9,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 2
+          "ratediff": 0
         },
         {
           "purity": 99.9,
           "rate": 261.9,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 2
+          "ratediff": 0
         },
         {
           "purity": 100,
           "rate": 261.9,
           "createdTime": "2026-02-14 10:29:13",
-          "ratediff": 2
+          "ratediff": 0
         }
       ],
       "price": 261.9,
-      "ratediff": 2,
-      "bollinger": null,
+      "ratediff": 0,
+      "bollinger": {
+        "middle": 260.56666666666666,
+        "upper": 262.45228474983077,
+        "lower": 258.68104858350256
+      },
       "volatility": 0.0486763836094272,
       "drawdown": 0,
       "anomalyScore": 0,
@@ -321,7 +337,7 @@
           null
         ]
       },
-      "ma7": null
+      "ma7": 260.56666666666666
     }
   }
 }
